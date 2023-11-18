@@ -1,0 +1,48 @@
+a=23.4
+b=45
+c=678
+print(a)
+print(b)
+print(c)
+
+list1=list(a,b,c)
+print(list1)
+
+list1=list[-3]
+print(list1)
+
+#I am learning R
+
+MyName="Arshiya"
+MySurName="Kishore"
+print(MyName)
+print(MySurName)
+
+var1=0
+var2=1
+
+print(a+b)
+print(a-c)
+print(b*c)
+print(a/c)
+
+x=2
+y=4
+
+print(log10(x))
+print(log(y))
+print(exp(x))
+print(pi)
+print(sqrt(y))
+
+
+ans1= 23 + (4.5 * 2.3) / 10
+ans2= (456 / 12)-log(90)
+ans3= exp(5) + 12 / (5 ^ 6)
+ans4= sqrt(45)*(12/3)
+
+print(ans1)
+print(ans2)
+print(ans3)
+print(ans4)
+
