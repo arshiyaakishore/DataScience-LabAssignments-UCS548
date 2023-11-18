@@ -1,1 +1,57 @@
-kcnc
+arr=array(c(12, 13, 14, 15, 16))
+arr
+sum_array=sum(arr)
+sum_array
+
+product1=prod(arr)
+product1
+
+min_ele=min(arr)
+min_ele
+
+max_ele=max(arr)
+max_ele
+
+print(range(arr))
+
+print(mean(arr))
+print(sd(arr))
+print(var(arr))
+print(median(arr))
+
+
+b=sort(arr)
+print(b)
+
+c=sort(arr, decreasing = TRUE)
+print(c)
+
+mat=matrix(1:12, nrow=3, ncol=4)
+mat
+
+RW=rbind(arr,b,c)
+print(RW)
+
+CW=cbind(arr,b,c)
+print(CW)
+
+RW[2:3, ]
+
+CW[ ,1]
+CW[ ,4]
+
+find=RW[2,3]
+answer=find %in% RW
+answer
+RW[2,3]
+
+find=CW[2,3]
+answer=find %in% CW
+answer
+
+CW[2,4]
+
+find=RW[3,4]
+answer=find %in% RW
+answer
+
