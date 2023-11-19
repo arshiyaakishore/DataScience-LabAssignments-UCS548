@@ -9,3 +9,16 @@ v3=c(seq(14,0,-2))
 v3
 v4=c(rep(5,2),rep(12,2), rep(13,2), rep(20,2))
 v4
+
+#Q2
+data=iris
+data
+
+class(data)
+nrow(data)
+ncol(data)
+dim(data)
+str(data)
+summary(data)
+typeof(data)
+#The variable Species is a factor and it has 3 levels.
