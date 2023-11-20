@@ -13,12 +13,43 @@ v4
 #Q2
 data=iris
 data
+#2A
+typeof(data)
 
 class(data)
+
+#2B
 nrow(data)
 ncol(data)
+
 dim(data)
 str(data)
 summary(data)
-typeof(data)
+
+#2C
 #The variable Species is a factor and it has 3 levels.
+
+#Q3
+#3a
+mean(data$Sepal.Width)
+mean(data$Sepal.Length)
+sd(data$Sepal.Length)
+sd(data$Sepal.Width)
+#3b
+
+
+
+#Q4
+data=mtcars
+data
+str(mtcars)
+names(mtcars)
+
+ans4a=mtcars[mtcars$cyl>=5, ]
+ans4a
+
+ans4b=mtcars[1:10, ]
+ans4b
+
+ans4c=mtcars[grep("Honda", rownames(mtcars)), ]
+ans4c
