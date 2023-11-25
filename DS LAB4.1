@@ -1,5 +1,16 @@
 #Q1
-df=data.frame(
 
-)
+df=data.frame(
+  PatientID=c(1,2,3,4),
+  AdmDate= as.Date(c("10/15/2009","11/01/2009", "10/21/2009", "10/28/2009"), format="%m/%d/%Y"),
+  Age=c(25,34,28,52),
+  Diabetes=c("Type 1", "Type 2", "Type 1", "Type 1"),
+  Status=c("Poor", "Improved", "Excellent", "Poor")
+);
+
+df
+
 #Q2
+#a
+subset1=df[,c("PatientID","Age")]
+subset1
