@@ -1,4 +1,56 @@
-#Q1
+# Create a data matrix with marks for 20 students in three subjects
+MARKS <- data.frame(
+  SUB1 = c(85, 78, 92, 67, 88, 76, 94, 81, 90, 70, 85, 78, 92, 67, 88, 76, 94, 81, 90, 70),
+  SUB2 = c(76, 89, 72, 95, 81, 88, 77, 90, 79, 93, 76, 89, 72, 95, 81, 88, 77, 90, 79, 93),
+  SUB3 = c(94, 85, 78, 90, 67, 88, 76, 92, 81, 70, 94, 85, 78, 90, 67, 88, 76, 92, 81, 70)
+)
+MARKS
+
+# a. To find the total marks of each student
+total_marks <- apply(MARKS, 1, sum)
+total_marks
+
+# b. Append the total marks to the given MARKS dataset
+MARKS$Total <- total_marks
+MARKS
+
+# c. Create a function to find the standard error in SUB1, SUB2, and SUB3
+st.err <- function(x) {
+  sd(x) / sqrt(length(x))
+}
+
+standard_error_SUB1 <- st.err(MARKS$SUB1)
+standard_error_SUB2 <- st.err(MARKS$SUB2)
+standard_error_SUB3 <- st.err(MARKS$SUB3)
+
+# d. Add 0.25 bonus marks to each mark in SUB1, SUB2, and SUB3
+MARKS$SUB1 <- MARKS$SUB1 + 0.25
+MARKS$SUB2 <- MARKS$SUB2 + 0.25
+MARKS$SUB3 <- MARKS$SUB3 + 0.25
+
 
 #Q2
-dplyr
+V1 <- MARKS$SUB1
+V2 <- MARKS$SUB2
+V3 <- MARKS$SUB3
+sum_marks <- lapply(list(V1, V2, V3), sum)
+sum_marks
+
+#Q3
+TOTAL_SUM <- sapply(list(V1, V2, V3), sum)
+TOTAL_SUM
+
+#Q4
+squared_marks <- lapply(list(V1, V2, V3), function(x) x^2)
+
+#Q5. Add an index field I = (1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4) to matrix MARKS.
+# Use tapply() function to compute mean() and sd() of SUB1 based on index I.
+MARKS$I <- c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4)
+mean_by_index <- tapply(MARKS$SUB1, MARKS$I, mean)
+sd_by_index <- tapply(MARKS$SUB1, MARKS$I, sd)
+
+#Q6. Create a function f(x, y) = x/y where x is V1 and y is V2.
+# Use mapply() to compute this function.
+f <- function(x, y) x / y
+result <- mapply(f, V1, V2)
+
