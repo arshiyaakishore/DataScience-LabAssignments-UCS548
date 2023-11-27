@@ -31,12 +31,18 @@ summary(data)
 
 #Q3
 #3a
-mean(data$Sepal.Width)
-mean(data$Sepal.Length)
-sd(data$Sepal.Length)
-sd(data$Sepal.Width)
-#3b
+mean_sepal_width <- tapply(iris$Sepal.Width, iris$Species, mean)
+sd_sepal_width <- tapply(iris$Sepal.Width, iris$Species, sd)
 
+mean_sepal_length <- tapply(iris$Sepal.Length, iris$Species, mean)
+sd_sepal_length <- tapply(iris$Sepal.Length, iris$Species, sd)
+
+#3b
+iris.class <- iris
+iris.class$Calyx.Width <- sapply(iris.class$Sepal.Length, function(x) {
+  ifelse(x < 5, "short", "long")
+})
+iris.class
 
 
 #Q4
@@ -47,9 +53,11 @@ names(mtcars)
 
 ans4a=mtcars[mtcars$cyl>=5, ]
 ans4a
+subset(data,mtcars$cyl>=5)
 
 ans4b=mtcars[1:10, ]
 ans4b
+head(data,10)
 
 ans4c=mtcars[grep("Honda", rownames(mtcars)), ]
 ans4c
