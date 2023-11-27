@@ -1,78 +1,51 @@
 
 #QUESTION1
 library(dplyr)
-df = data.frame(
-  Country = c("Country1", "Country2", "Country3", "Country4", "Country5"),
-  Continent = c("Continent1", "Continent2", "Continent3", "Continent4", "Continent5"),
-  Year = sample(2000:2020, 20, replace = TRUE),
-  LifeExp = runif(20, 50, 85),
-  Pop = sample(1000000:10000000, 20, replace = TRUE),
-  gdpPerc = runif(20, 1000, 50000)
-)
-df
+n_years <- 20
+data <- data.frame(
+  Country = rep(c("Country1", "Country2", "Country3"), each = n_years),
+  Continent = rep(c("Continent1", "Continent2"), each = n_years * 3),
+  Year = rep(seq(2000, 2019), times = 3),
+  LifeExp = runif(n_years * 3, min = 60, max = 85),
+  Pop = sample(1000000:10000000, n_years * 3, replace = TRUE),
+  gdpPerc = runif(n_years * 3, min = 1000, max = 50000))
+data
 
+# 1. How many unique countries are represented per continent?
+unique_countries_per_continent <- data %>%  group_by(Continent) %>% summarize(unique_countries = n_distinct(Country))
+unique_countries_per_continent
 
-#Q1
-df_count <- df %>% group_by(Continent) %>% summarize(Unique_Countries = n_distinct(Country))
-df_count
+# 2. Which European nation had the lowest GDP per capita in a given year?
+lowest_gdp_per_capita_europe <- data%>%  filter(Continent == "Continent1") %>% arrange(gdpPerc) %>%  slice(1)
+lowest_gdp_per_capita_europe
 
-#Q2
-european_df <- df %>% filter(Continent %in% c("Continent1", "Continent2", "Continent3")) 
-# Find the European nation with the lowest GDP per capita
-lowest_gdp_country <- european_df %>% filter(gdpPerc == min(gdpPerc))
-lowest_gdp_country
+# 3. According to the data available, what was the average life expectancy across each continent in a given year?
+average_life_expectancy_per_continent <- data%>%group_by(Continent, Year) %>%  summarize(avg_life_expectancy = mean(LifeExp, na.rm = TRUE))
+average_life_expectancy_per_continent
 
-#Q3
-year_to_analyze <- 2010  
-# Filter the dataset for the specified year
-filtered_data <- df %>% filter(Year == year_to_analyze)
-# Group the data by Continent and calculate the average life expectancy
-average_life_expectancy <- filtered_data %>% group_by(Continent) %>% summarize(AvgLifeExp = mean(LifeExp))
-average_life_expectancy
-#Q4
-total_gdp_by_country <- df %>% group_by(Country) %>% summarize(TotalGDP = sum(gdpPerc))
-# Arrange the data in descending order of total GDP
-total_gdp_by_country <- total_gdp_by_country %>% arrange(desc(TotalGDP))
-# Select the top 5 countries with the highest total GDP
-top_5_countries_gdp <- head(total_gdp_by_country, 5)
-top_5_countries_gdp
+# 4. What 5 countries have the highest total GDP over all years combined?
+top5_countries_highest_gdp <- data %>%  group_by(Country) %>%  summarize(total_gdp = sum(gdpPerc)) %>%  arrange(desc(total_gdp)) %>%  head(5)
+top5_countries_highest_gdp
 
-#Q5
-high_life_expectancy <- df %>% filter(LifeExp >= 80)
-high_life_expectancy
+# 5. What countries and years had life expectancies of at least 80 years?
+high_life_expectancy_data <- data %>%  filter(LifeExp >= 80)
+high_life_expectancy_data
 
-#Q6
-# Calculate the correlation between LifeExp and gdpPerc for each country
-correlation_data <- df %>%  group_by(Country) %>%  summarize(Correlation = cor(LifeExp, gdpPerc))
-# Arrange the data in descending order of the absolute correlation value
-correlation_data <- correlation_data %>%  arrange(desc(abs(Correlation)))
-# Select the top 10 countries with the strongest correlation
-top_10_countries_correlation <- head(correlation_data, 10)
-top_10_countries_correlation
+# 6. What 10 countries have the strongest correlation (in either direction) between life expectancy and per capita GDP?
+correlation_top10_countries <- data %>%  group_by(Country) %>%  summarize(correlation = cor(LifeExp, gdpPerc)) %>%  arrange(abs(correlation)) %>%  head(10)
+correlation_top10_countries
 
-#Q7
-filtered_data <- df %>%  filter(Continent != "Asia")
-# Group the data by Continent and Year, and calculate the average population
-average_population_by_continent_year <- filtered_data %>%  group_by(Continent, Year) %>%  summarize(AvgPopulation = mean(Pop))
-# Find the combination with the highest average population
-highest_avg_population_combination <- average_population_by_continent_year %>%  filter(AvgPopulation == max(AvgPopulation))
-highest_avg_population_combination
+# 7. Which combinations of continent (besides Asia) and year have the highest average population across all countries?
+correlation_top10_countries <- data %>%  filter(Continent != "Continent1") %>%  group_by(Continent, Year) %>%  summarize(avg_population = mean(Pop))
+head(correlation_top10_countries,1)
 
-#Q8
-population_std_deviation <- df %>%  group_by(Country) %>%  summarize(PopStdDev = sd(Pop))
-# Arrange the data in ascending order of population standard deviation
-population_std_deviation <- population_std_deviation %>%  arrange(PopStdDev)
-# Select the top three countries with the lowest standard deviation
-top_3_consistent_population_countries <- head(population_std_deviation, 3)
-top_3_consistent_population_countrieS
+# 8. Which three countries have had the most consistent population estimates (i.e., lowest standard deviation) across the years of available data?
+correlation_top10_countries <- data %>%  group_by(Country) %>%  summarize(standard_deviation = sd(Pop)) %>%  arrange(standard_deviation) %>%  head(3)
+correlation_top10_countries
 
-#Q9
-year_to_exclude <- 2005 
-# Filter the data, excluding the specified year
-filtered_data <- df %>%  filter(Year != year_to_exclude)
-# Identify observations where population decreased and life expectancy increased
-result <- filtered_data %>%  arrange(Country, Year) %>%  group_by(Country) %>%  filter(Pop < lag(Pop, default = first(Pop)) & LifeExp > lag(LifeExp, default = first(LifeExp)))
-result
+# 9. Excluding records from a given year, which observations indicate that the population of a country has decreased from the previous year and the life expectancy has increased?
+correlation_top10_countries<- data%>%  arrange(Country, Year) %>%  filter(lag(Pop) > Pop & lag(LifeExp) < LifeExp & !is.na(lag(Pop)))
+correlation_top10_countries
 #-------------------------------------------------------------------
 
 #QUESTION2
