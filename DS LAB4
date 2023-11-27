@@ -15,7 +15,6 @@ data=iris
 data
 #2A
 typeof(data)
-
 class(data)
 
 #2B
