@@ -1,0 +1,63 @@
+library(ggplot2)
+Project1=read.csv('C:/Users/Arshiya/Downloads/ex12_normalized_intensities.csv', header = TRUE, row.names = 1)
+Project1
+
+#Q1
+# Create the scatter plot
+ggplot(data = Project1, aes(x = sampleB, y = sampleH)) +
+  geom_point() +
+  labs(x = "sampleB", y = "sampleH") +
+  ggtitle("Gene Expression Scatter Plot")
+
+#Q2
+
+# Create the expr_limits column based on the specified conditions
+Project1$expr_limits <- ifelse(Project1$sampleB > 13 & Project1$sampleH > 13, "high",
+                               ifelse(Project1$sampleB < 6 & Project1$sampleH < 6, "low", "normal"))
+
+#Q3
+
+# Create the scatter plot and color points based on expr_limits
+p <- ggplot(data = Project1, aes(x = sampleB, y = sampleH, color = expr_limits)) +
+  geom_point() +
+  labs(x = "sampleB", y = "sampleH") +
+  ggtitle("Gene Expression Scatter Plot")
+
+# Display the plot
+print(p)
+
+#Q4
+# Create a boxplot of the expression of all samples
+p_boxplot <- ggplot(data = Project1, aes(x = expr_limits, y = sampleB, color = expr_limits)) +
+  geom_boxplot() +
+  labs(x = "Expression Limits", y = "SampleB Expression") +
+  ggtitle("Boxplot of SampleB Expression by Expression Limits")
+
+# Display the boxplot
+print(p_boxplot)
+
+#Q5
+# Create a boxplot with facets for "low," "normal," and "high" genes
+p_sub_boxplot <- ggplot(data = Project1, aes(x = expr_limits, y = sampleB, color = expr_limits)) +
+  geom_boxplot() +
+  labs(x = "Expression Limits", y = "SampleB Expression") +
+  ggtitle("Boxplot of SampleB Expression by Expression Limits") +
+  facet_wrap(~expr_limits, scales = "free", ncol = 1)
+
+# Display the sub-boxplot
+print(p_sub_boxplot)
+
+#Q6
+#  Create a data frame for plotting
+expr_limits_df <- data.frame(expr_limits = Project1$expr_limits)
+
+# Create a bar plot
+p_barplot <- ggplot(data = expr_limits_df, aes(x = expr_limits, fill = expr_limits)) +
+  geom_bar() +
+  labs(x = "Expression Limits", y = "Count") +
+  ggtitle("Count of Genes by Expression Limits") +
+  scale_fill_manual(values = c("low" = "blue", "normal" = "green", "high" = "red"))
+
+# Display the bar plot
+print(p_barplot)
+
