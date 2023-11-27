@@ -1,5 +1,4 @@
 #Q1
-
 df=data.frame(
   PatientID=c(1,2,3,4),
   AdmDate= as.Date(c("10/15/2009","11/01/2009", "10/21/2009", "10/28/2009"), format="%m/%d/%Y"),
@@ -15,10 +14,9 @@ df
 subset1=df[,c("PatientID","Age")]
 subset1
 
-#b nahi huaaaaa
-type1_patients=df[df$Diabetes =="Type 1"]
+#b
+type1_patients=df[df$Diabetes =="Type 1", ]
 type1_patients
-
 
 #c
 sum(df$Status=="Poor")
@@ -29,7 +27,40 @@ summary(df)
 #e
 mean(df$Age[df$Diabetes=="Type 1"])
 
-#f nahi hua
+#f
+new_patient <- data.frame(
+  PatientID = 5,
+  AdmDate = as.Date("11/15/2009", format = "%m/%d/%Y"),
+  Age = 45,
+  Diabetes = "Type 2",
+  Status = "Excellent"
+)
 
-#Q3 nahi hua
+# Append the new patient to the existing data frame
+df <- rbind(df, new_patient)
+# Print the updated data frame
+print("Updated Data Frame:")
+print(df)
+
+
+#Q3
+# a. Create a list named MyList
+MyList <- list(
+  title = "My First List",
+  criteria = list(
+    a = c(12, 14, 16, 20),
+    b = matrix(1:10, nrow = 5),
+    c = c("First", "Second", "Third")
+  )
+)
+MyList
+
+# b. Extracting the individual components for clarity
+criteria <- MyList$criteria
+vector_a <- criteria$a
+
+# c. Print MyList, criteria, and vector a
+print(MyList)
+print(criteria)
+print(vector_a)
 
