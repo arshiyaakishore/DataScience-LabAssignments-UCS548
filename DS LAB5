@@ -1,2 +1,29 @@
 #Q1
+library("dplyr")
+library("tidyverse")
+df=read.csv('C:/Users/Arshiya/Downloads/daily_show_guests.csv')
+head(df,10)
+
 #Q2
+colnames(df)
+a=df%>% rename(year=YEAR,job = GoogleKnowlege_Occupation, date=Show,category=Group,Guest_name=Raw_Guest_List)
+colnames(a)
+#Q3
+report=df%>%select(YEAR,Show, Raw_Guest_List)
+report
+
+#Q4
+withoutyear=df%>%select(-YEAR)
+head(withoutyear)
+
+#Q5
+abc_actor=df%>%filter(GoogleKnowlege_Occupation=="actor",grepl("ABC", Raw_Guest_List,ignore.case=T))
+head(abc_actor)
+
+#Q6
+arranged_data = df %>% arrange(Show)
+arranged_data
+
+#Q7
+df= df%>% mutate(Experience = 2023 - YEAR)
+head(df)
