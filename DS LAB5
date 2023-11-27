@@ -4,26 +4,27 @@ library("tidyverse")
 df=read.csv('C:/Users/Arshiya/Downloads/daily_show_guests.csv')
 head(df,10)
 
-#Q2
+# Q2. Display the column names and rename the columns
 colnames(df)
 a=df%>% rename(year=YEAR,job = GoogleKnowlege_Occupation, date=Show,category=Group,Guest_name=Raw_Guest_List)
 colnames(a)
-#Q3
+
+# Q3. Create a report with year, date, and guest_name
 report=df%>%select(YEAR,Show, Raw_Guest_List)
 report
 
-#Q4
+# Q4. Use "select" (dplyr) function to print all the records except "year"
 withoutyear=df%>%select(-YEAR)
 head(withoutyear)
 
-#Q5
+# Q5. Extract the list of people who are "actor" and whose name is "ABC"
 abc_actor=df%>%filter(GoogleKnowlege_Occupation=="actor",grepl("ABC", Raw_Guest_List,ignore.case=T))
 head(abc_actor)
 
-#Q6
+# Q6. Arrange the records in order of date
 arranged_data = df %>% arrange(Show)
 arranged_data
 
-#Q7
+# Q7. Add one column to the database with the name "Experience"
 df= df%>% mutate(Experience = 2023 - YEAR)
 head(df)
