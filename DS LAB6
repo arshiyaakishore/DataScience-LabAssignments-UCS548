@@ -1,1 +1,136 @@
+
+#QUESTION1
+library(dplyr)
+df = data.frame(
+  Country = c("Country1", "Country2", "Country3", "Country4", "Country5"),
+  Continent = c("Continent1", "Continent2", "Continent3", "Continent4", "Continent5"),
+  Year = sample(2000:2020, 20, replace = TRUE),
+  LifeExp = runif(20, 50, 85),
+  Pop = sample(1000000:10000000, 20, replace = TRUE),
+  gdpPerc = runif(20, 1000, 50000)
+)
+df
+
+
 #Q1
+df_count <- df %>% group_by(Continent) %>% summarize(Unique_Countries = n_distinct(Country))
+df_count
+
+#Q2
+european_df <- df %>% filter(Continent %in% c("Continent1", "Continent2", "Continent3")) 
+# Find the European nation with the lowest GDP per capita
+lowest_gdp_country <- european_df %>% filter(gdpPerc == min(gdpPerc))
+lowest_gdp_country
+
+#Q3
+year_to_analyze <- 2010  
+# Filter the dataset for the specified year
+filtered_data <- df %>% filter(Year == year_to_analyze)
+# Group the data by Continent and calculate the average life expectancy
+average_life_expectancy <- filtered_data %>% group_by(Continent) %>% summarize(AvgLifeExp = mean(LifeExp))
+average_life_expectancy
+#Q4
+total_gdp_by_country <- df %>% group_by(Country) %>% summarize(TotalGDP = sum(gdpPerc))
+# Arrange the data in descending order of total GDP
+total_gdp_by_country <- total_gdp_by_country %>% arrange(desc(TotalGDP))
+# Select the top 5 countries with the highest total GDP
+top_5_countries_gdp <- head(total_gdp_by_country, 5)
+top_5_countries_gdp
+
+#Q5
+high_life_expectancy <- df %>% filter(LifeExp >= 80)
+high_life_expectancy
+
+#Q6
+# Calculate the correlation between LifeExp and gdpPerc for each country
+correlation_data <- df %>%  group_by(Country) %>%  summarize(Correlation = cor(LifeExp, gdpPerc))
+# Arrange the data in descending order of the absolute correlation value
+correlation_data <- correlation_data %>%  arrange(desc(abs(Correlation)))
+# Select the top 10 countries with the strongest correlation
+top_10_countries_correlation <- head(correlation_data, 10)
+top_10_countries_correlation
+
+#Q7
+filtered_data <- df %>%  filter(Continent != "Asia")
+# Group the data by Continent and Year, and calculate the average population
+average_population_by_continent_year <- filtered_data %>%  group_by(Continent, Year) %>%  summarize(AvgPopulation = mean(Pop))
+# Find the combination with the highest average population
+highest_avg_population_combination <- average_population_by_continent_year %>%  filter(AvgPopulation == max(AvgPopulation))
+highest_avg_population_combination
+
+#Q8
+population_std_deviation <- df %>%  group_by(Country) %>%  summarize(PopStdDev = sd(Pop))
+# Arrange the data in ascending order of population standard deviation
+population_std_deviation <- population_std_deviation %>%  arrange(PopStdDev)
+# Select the top three countries with the lowest standard deviation
+top_3_consistent_population_countries <- head(population_std_deviation, 3)
+top_3_consistent_population_countrieS
+
+#Q9
+year_to_exclude <- 2005 
+# Filter the data, excluding the specified year
+filtered_data <- df %>%  filter(Year != year_to_exclude)
+# Identify observations where population decreased and life expectancy increased
+result <- filtered_data %>%  arrange(Country, Year) %>%  group_by(Country) %>%  filter(Pop < lag(Pop, default = first(Pop)) & LifeExp > lag(LifeExp, default = first(LifeExp)))
+result
+#-------------------------------------------------------------------
+
+#QUESTION2
+#Q1
+# Create a sample dataset with 10 records
+med_data <- data.frame(
+  MedID = 1:10,
+  Med_Name = c("Med1", "Med2", "Med3", "Med4", "Med5", "Med6", "Med7", "Med8", "Med9", "Med10"),
+  Company = c("CompanyA", "CompanyB", "CompanyC", "CompanyD", "CompanyE", "CompanyF", "CompanyG", "CompanyH", "CompanyI", "CompanyJ"),
+  Manf_year = sample(2000:2020, 10, replace = TRUE),
+  Exp_date = sample(2021:2030, 10, replace = TRUE),
+  Quantity_in_stock = sample(100:1000, 10, replace = TRUE),
+  Sales = sample(10:100, 10, replace = TRUE)
+)
+# Save the dataset to a CSV file
+write.csv(med_data, file = "DataSet.csv", row.names = FALSE)
+# Verify the saved file
+read.csv("DataSet.csv")
+
+#Q2
+med_data <- read.csv("DataSet.csv")
+head(med_data,4)
+
+#Q3
+tail(med_data, 4)
+
+#Q4
+# Calculate the correlation between Quantity_in_stock and Exp_date
+correlation <- cor(med_data$Quantity_in_stock, med_data$Exp_date)
+correlation
+
+#Q5
+library(ggplot2)
+ggplot(med_data, aes(x = as.factor(Manf_year), y = Sales)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Sales by Year of Manufacturing", x = "Year of Manufacturing", y = "Sales")
+
+#Q6    --------> sahi hai---aisi koi company nhi jiski med_data >1 ho
+company_counts <- med_data %>%  group_by(Company) %>%  summarize(Num_Medicines = n_distinct(Med_Name))
+# Filter for companies with more than one type of medicine
+companies_with_multiple_meds <- company_counts %>%  filter(Num_Medicines > 1)
+companies_with_multiple_meds
+
+#Q7
+unique_medicines <- unique(med_data$Med_Name)
+unique_medicines
+
+#Q8
+# Create a box plot to show which medicines are expiring
+ggplot(med_data, aes(x = Med_Name, y = Exp_date)) +  geom_boxplot(fill = "blue", color = "black") +  labs(title = "Medicine Expiry Dates", x = "Medicine Type", y = "Expiry Date")
+
+#Q9
+average_stock <- mean(med_data$Quantity_in_stock)
+average_stock
+
+#Q10
+ggplot(med_data, aes(x = Manf_year, y = Sales)) +
+  geom_point() +                   # Add scatter plot points
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +  # Add regression line
+  labs(title = "Regression Line: Manufacturing Year vs. Sales", x = "Manufacturing Year", y = "Sales")
+
