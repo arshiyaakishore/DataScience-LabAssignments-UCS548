@@ -6,6 +6,7 @@ MARKS <- data.frame(
 )
 MARKS
 
+
 # a. To find the total marks of each student
 total_marks <- apply(MARKS, 1, sum)
 total_marks
